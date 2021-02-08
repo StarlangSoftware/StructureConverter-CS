@@ -1,0 +1,294 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "StructureConverter/1.0.0": {
+        "dependencies": {
+          "NlpToolkit-AnnotatedSentence": "1.0.10",
+          "NlpToolkit-AnnotatedTree": "1.0.4",
+          "NlpToolkit-MorphologicalAnalysis": "1.0.8",
+          "NlpToolkit-ParseTree": "1.0.2",
+          "NlpToolkit-Util": "1.0.2"
+        },
+        "runtime": {
+          "StructureConverter.dll": {}
+        }
+      },
+      "NlpToolkit-AnnotatedSentence/1.0.10": {
+        "dependencies": {
+          "NlpToolkit-DependencyParser": "1.0.5",
+          "NlpToolkit-FrameNet": "1.0.3",
+          "NlpToolkit-MorphologicalAnalysis": "1.0.8",
+          "NlpToolkit-NamedEntityRecognition": "1.0.2",
+          "NlpToolkit-PropBank": "1.0.2",
+          "NlpToolkit-WordNet": "1.0.12"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AnnotatedSentence.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-AnnotatedTree/1.0.4": {
+        "dependencies": {
+          "NlpToolkit-AnnotatedSentence": "1.0.10",
+          "NlpToolkit-ParseTree": "1.0.2",
+          "NlpToolkit-Util": "1.0.2"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AnnotatedTree.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-Corpus/1.0.4": {
+        "dependencies": {
+          "NlpToolkit-DataStructure": "1.0.1",
+          "NlpToolkit-Dictionary": "1.0.8",
+          "NlpToolkit-Sampling": "1.0.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/Corpus.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-DataStructure/1.0.1": {
+        "runtime": {
+          "lib/netcoreapp2.2/DataStructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-DependencyParser/1.0.5": {
+        "dependencies": {
+          "NlpToolkit-MorphologicalAnalysis": "1.0.8"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/DependencyParser.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-Dictionary/1.0.8": {
+        "dependencies": {
+          "NlpToolkit-Math": "1.0.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/Dictionary.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-FrameNet/1.0.3": {
+        "runtime": {
+          "lib/netcoreapp3.1/FrameNet.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-Math/1.0.2": {
+        "runtime": {
+          "lib/netcoreapp2.2/Math.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-MorphologicalAnalysis/1.0.8": {
+        "dependencies": {
+          "NlpToolkit-Corpus": "1.0.4",
+          "NlpToolkit-Dictionary": "1.0.8",
+          "NlpToolkit-Math": "1.0.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/MorphologicalAnalysis.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-NamedEntityRecognition/1.0.2": {
+        "dependencies": {
+          "NlpToolkit-Corpus": "1.0.4"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/NamedEntityRecognition.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-ParseTree/1.0.2": {
+        "dependencies": {
+          "NlpToolkit-DependencyParser": "1.0.5",
+          "NlpToolkit-Dictionary": "1.0.8"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/ParseTree.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-PropBank/1.0.2": {
+        "runtime": {
+          "lib/netcoreapp2.2/PropBank.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-Sampling/1.0.2": {
+        "runtime": {
+          "lib/netcoreapp2.2/Sampling.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-Util/1.0.2": {
+        "runtime": {
+          "lib/netcoreapp2.2/Util.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NlpToolkit-WordNet/1.0.12": {
+        "dependencies": {
+          "NlpToolkit-MorphologicalAnalysis": "1.0.8"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/WordNet.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "StructureConverter/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NlpToolkit-AnnotatedSentence/1.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UYsnUeiWC9Q36+qL4jM00+KltQBs1UFCT9Q6NW38yrNWifT9ZlwPs1P+40a33LsxDgoO74iDaNXiMgGXdgCBkg==",
+      "path": "nlptoolkit-annotatedsentence/1.0.10",
+      "hashPath": "nlptoolkit-annotatedsentence.1.0.10.nupkg.sha512"
+    },
+    "NlpToolkit-AnnotatedTree/1.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KX/YiGbFScXIoM/a0RIZCZMf7KQsblWrlOyZfg4TIowG3WG6y1b43skSbF6krw7rT+bc9NO3MmPVnpSKkDMLoA==",
+      "path": "nlptoolkit-annotatedtree/1.0.4",
+      "hashPath": "nlptoolkit-annotatedtree.1.0.4.nupkg.sha512"
+    },
+    "NlpToolkit-Corpus/1.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WRVTE9gGoVfmItxZ/h3cTlgLJVsNhr4X7sKIkMwXdlvrOvsVL4MuMknmMFTI1F/AyUHh7Xio9KP9OGZjQESVKA==",
+      "path": "nlptoolkit-corpus/1.0.4",
+      "hashPath": "nlptoolkit-corpus.1.0.4.nupkg.sha512"
+    },
+    "NlpToolkit-DataStructure/1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zqfRVrufFM5M0uNJCzs6l4Qn295wUmbDQ2fx5dxOr11KFSYGYtVuPQQ9FrwnvdxqejSYinBhUL45Vyfce8vOqA==",
+      "path": "nlptoolkit-datastructure/1.0.1",
+      "hashPath": "nlptoolkit-datastructure.1.0.1.nupkg.sha512"
+    },
+    "NlpToolkit-DependencyParser/1.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Z67BN+IBcj4PPBQEwO0iRAipohqSNJ5esgXoL9iTtsxvxi/aZ+MDY6yCc5x4xYLbfLqIJ+78gy5s+9J6fh4Q6Q==",
+      "path": "nlptoolkit-dependencyparser/1.0.5",
+      "hashPath": "nlptoolkit-dependencyparser.1.0.5.nupkg.sha512"
+    },
+    "NlpToolkit-Dictionary/1.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8LFFdt0q2ymvBPIlad03CCy9eEX5mLWEY7E/ayndhMPjAl/VZo9ZCzie8S7swLZ9vAx39uaGBdGPj7mNFYJxNQ==",
+      "path": "nlptoolkit-dictionary/1.0.8",
+      "hashPath": "nlptoolkit-dictionary.1.0.8.nupkg.sha512"
+    },
+    "NlpToolkit-FrameNet/1.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-svIuvncAU4BH6KO0LYuTyNB+B0VAXFtqf6JVk9j8/Dsyt4FJNmOxXQUpdAzIlIZJmh1itvzQjIOFftEfB86zGw==",
+      "path": "nlptoolkit-framenet/1.0.3",
+      "hashPath": "nlptoolkit-framenet.1.0.3.nupkg.sha512"
+    },
+    "NlpToolkit-Math/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-di5r84s1NTEUgnnjXIXa1wN07LRRmjD98U6Ri5z1hvx/O28zhboHvLwtqif0cfPIJXLgAxUJvtbp6wRUdhXEGw==",
+      "path": "nlptoolkit-math/1.0.2",
+      "hashPath": "nlptoolkit-math.1.0.2.nupkg.sha512"
+    },
+    "NlpToolkit-MorphologicalAnalysis/1.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9Lx5uo0WO0vDP7Epx0ziigGF2w/746tTDln/FjDgz0D2/+ZZ5XvDZzof9rVLkkWnNZG3YNclt7Nuo7TsWByHNw==",
+      "path": "nlptoolkit-morphologicalanalysis/1.0.8",
+      "hashPath": "nlptoolkit-morphologicalanalysis.1.0.8.nupkg.sha512"
+    },
+    "NlpToolkit-NamedEntityRecognition/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-luWrUwunKc4JAr6lJTFqWpxwCeeqtT2rw9ob7zcsubDx6IqzCEY9Ea2wiNwVpHWYlcK/vrTlQYC1zJ1zg6xgXA==",
+      "path": "nlptoolkit-namedentityrecognition/1.0.2",
+      "hashPath": "nlptoolkit-namedentityrecognition.1.0.2.nupkg.sha512"
+    },
+    "NlpToolkit-ParseTree/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uo9B6XyfH72kWQL6Cfeh9sTm1Yx7rI9AK7ykLgxQu/YaBMtPAkFI5/AcB1d4Fh3TQY7HpqHc74BdEBi05b9LWA==",
+      "path": "nlptoolkit-parsetree/1.0.2",
+      "hashPath": "nlptoolkit-parsetree.1.0.2.nupkg.sha512"
+    },
+    "NlpToolkit-PropBank/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KMmEd2KKtPhE5WxTdhO99bABVMoxge5e+UHqe8SwKHn1m3qABcOONXmYQJOzYYlyEC4NERTnNmK6KClVpX/jeg==",
+      "path": "nlptoolkit-propbank/1.0.2",
+      "hashPath": "nlptoolkit-propbank.1.0.2.nupkg.sha512"
+    },
+    "NlpToolkit-Sampling/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3eEw2Vckk6P9dAk2DsfHwZUSwVH82K+lHHxHAh2xJ2ZLx86WBigh0cTxrRKIPakFjLrU2S6JbPMo5u6nMYPHGw==",
+      "path": "nlptoolkit-sampling/1.0.2",
+      "hashPath": "nlptoolkit-sampling.1.0.2.nupkg.sha512"
+    },
+    "NlpToolkit-Util/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TjOqZEbrb9c7WuQ7DP+pko654+K7fc71+4kQ6IcaZapv4jfZeY4/8tl2T9E6Kwnl56kUrvO/M1pDmvNEcW8vfw==",
+      "path": "nlptoolkit-util/1.0.2",
+      "hashPath": "nlptoolkit-util.1.0.2.nupkg.sha512"
+    },
+    "NlpToolkit-WordNet/1.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/vrkq2FLUJHzRyEdXDKXNVIC/fTNofXqtJtudiGsHX0TgFqWMr6gV3xCI/X1TgflyG7itXlRU4UqYsH8xw1WQQ==",
+      "path": "nlptoolkit-wordnet/1.0.12",
+      "hashPath": "nlptoolkit-wordnet.1.0.12.nupkg.sha512"
+    }
+  }
+}
