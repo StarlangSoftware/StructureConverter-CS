@@ -40,4 +40,4 @@ Result: The imported project is listed in the Project Explorer view and files ar
 
 **From IDE**
 
-After being done with the downloading and opening project, select **Build Solution** option from **Build** menu. After compilation process, user can run DataStructure-CS.
+After being done with the downloading and opening project, select **Build Solution** option from **Build** menu. After compilation process, user can run StructureConverter-CS.
