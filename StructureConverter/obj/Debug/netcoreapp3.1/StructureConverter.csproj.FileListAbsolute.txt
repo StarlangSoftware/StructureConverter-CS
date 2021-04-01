@@ -7,3 +7,12 @@
 /Users/oguzkeremyildiz/Dropbox/StructureConverter-CS/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.csproj.CoreCompileInputs.cache
 /Users/oguzkeremyildiz/Dropbox/StructureConverter-CS/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.dll
 /Users/oguzkeremyildiz/Dropbox/StructureConverter-CS/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.pdb
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/bin/Debug/netcoreapp3.1/StructureConverter.deps.json
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/bin/Debug/netcoreapp3.1/StructureConverter.dll
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/bin/Debug/netcoreapp3.1/StructureConverter.pdb
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.csprojAssemblyReference.cache
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.AssemblyInfoInputs.cache
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.AssemblyInfo.cs
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.csproj.CoreCompileInputs.cache
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.dll
+/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/Debug/netcoreapp3.1/StructureConverter.pdb

@@ -375,11 +375,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/oguzkeremyildiz/Dropbox/StructureConverter-CS/StructureConverter/StructureConverter.csproj",
+      "projectUniqueName": "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj",
       "projectName": "StructureConverter",
-      "projectPath": "/Users/oguzkeremyildiz/Dropbox/StructureConverter-CS/StructureConverter/StructureConverter.csproj",
+      "projectPath": "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj",
       "packagesPath": "/Users/oguzkeremyildiz/.nuget/packages/",
-      "outputPath": "/Users/oguzkeremyildiz/Dropbox/StructureConverter-CS/StructureConverter/obj/",
+      "outputPath": "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/oguzkeremyildiz/.nuget/NuGet/NuGet.Config"

@@ -39,7 +39,7 @@ namespace StructureConverter.DependencyToConstituency {
                 commands.Add(new Tuple<Command, string>(Command.Left, null));
                 i++;
             }
-            commands.Add(new Tuple<Command, string>(Command.Merge, null));
+            commands.Add(new Tuple<Command, string>(Command.Merge, SetTreePos(unionList, unionList[currentIndex].GetTreePos())));
             return i;
         }
         
@@ -83,7 +83,7 @@ namespace StructureConverter.DependencyToConstituency {
                 commands.Add(new Tuple<Command, string>(Command.Left, null));
                 i++;
             }
-            commands.Add(new Tuple<Command, string>(Command.Merge, null));
+            commands.Add(new Tuple<Command, string>(Command.Merge, SetTreePos(unionList, unionList[currentIndex].GetTreePos())));
         }
         
         private bool ContainsWordNodePair(List<WordNodePair> unionList, int wordNodePairNo) {
@@ -119,56 +119,99 @@ namespace StructureConverter.DependencyToConstituency {
             return i;
         }
         
+        private string SetTreePos(List<WordNodePair> list, string currentPos) {
+            var treePos = currentPos;
+            foreach (var current in list) {
+                if (current != null && current.GetTreePos().Equals("PP")) {
+                    treePos = current.GetTreePos();
+                }
+            }
+            return treePos;
+        }
+
+        private List<Tuple<Command, string>> SimpleMerge(List<WordNodePair> unionList, string treePos, int index) {
+            var list = new List<Tuple<Command, string>>();
+            for (var i = 0; i < unionList.Count; i++) {
+                if (index != i) {
+                    if (i > index) {
+                        list.Add(new Tuple<Command, string>(Command.Right, null));
+                    } else {
+                        list.Add(new Tuple<Command, string>(Command.Left, null));
+                    }
+                }
+            }
+            list.Add(new Tuple<Command, string>(Command.Merge, treePos));
+            return list;
+        }
+        
         public List<Tuple<Command, string>> MakeCommands(Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int currentIndex) {
-            int i = 1, j = 1, specialIndex = -1; 
-            var commands = new List<Tuple<Command, string>>(); 
-            while (currentIndex - i > -1 || currentIndex + j < unionList.Count) { 
-                if (currentIndex - i > -1 && currentIndex + j < unionList.Count) { 
-                    var comparisonResult = CompareTo(unionList[currentIndex - i], unionList[currentIndex + j], specialsMap); 
-                    if (comparisonResult > 0) { 
-                        i = AddCommandsForLeft(currentIndex, i, unionList, specialsMap, commands); 
-                    } else if (comparisonResult < 0) { 
-                        commands.Add(new Tuple<Command, string>(Command.Right, null)); 
-                        commands.Add(new Tuple<Command, string>(Command.Merge, null)); 
-                        j++; 
-                    } else { 
-                        if (!specialsMap.ContainsKey(unionList[currentIndex - i].GetUniversalDependency()) && !specialsMap.ContainsKey(unionList[currentIndex + j].GetUniversalDependency())) { 
-                            break; 
-                        } else { 
-                            commands.Add(new Tuple<Command, string>(Command.Left, null)); 
+            var treePos = SetTreePos(unionList, unionList[currentIndex].GetTreePos());
+            if (unionList.Count > 2) {
+                int i = 1, j = 1, specialIndex = -1; 
+                var commands = new List<Tuple<Command, string>>(); 
+                while (currentIndex - i > -1 || currentIndex + j < unionList.Count) { 
+                    if (currentIndex - i > -1 && currentIndex + j < unionList.Count) { 
+                        var comparisonResult = CompareTo(unionList[currentIndex - i], unionList[currentIndex + j], specialsMap); 
+                        if (comparisonResult > 0) { 
+                            i = AddCommandsForLeft(currentIndex, i, unionList, specialsMap, commands); 
+                        } else if (comparisonResult < 0) { 
                             commands.Add(new Tuple<Command, string>(Command.Right, null)); 
-                            commands.Add(new Tuple<Command, string>(Command.Merge, null)); 
-                            i++; 
+                            commands.Add(new Tuple<Command, string>(Command.Merge, treePos)); 
                             j++; 
+                        } else { 
+                            if (!specialsMap.ContainsKey(unionList[currentIndex - i].GetUniversalDependency()) && !specialsMap.ContainsKey(unionList[currentIndex + j].GetUniversalDependency())) { 
+                                break; 
+                            } else { 
+                                commands.Add(new Tuple<Command, string>(Command.Left, null)); 
+                                commands.Add(new Tuple<Command, string>(Command.Right, null)); 
+                                commands.Add(new Tuple<Command, string>(Command.Merge, treePos)); 
+                                i++; 
+                                j++; 
+                            } 
                         } 
-                    } 
-                } else if (currentIndex - i > -1) { 
-                    if (specialsMap.ContainsKey(unionList[currentIndex - i].GetUniversalDependency())) { 
-                        i = AddCommandsForLeft(currentIndex, i, unionList, specialsMap, commands); 
-                    } else { 
-                        if (unionList[currentIndex - i].GetUniversalDependency().Equals("NSUBJ") || unionList[currentIndex - i].GetUniversalDependency().Equals("CSUBJ")) { 
-                            specialIndex = currentIndex - i; 
+                    } else if (currentIndex - i > -1) { 
+                        if (specialsMap.ContainsKey(unionList[currentIndex - i].GetUniversalDependency())) { 
+                            i = AddCommandsForLeft(currentIndex, i, unionList, specialsMap, commands); 
+                        } else { 
+                            if (unionList[currentIndex - i].GetUniversalDependency().Equals("NSUBJ") || unionList[currentIndex - i].GetUniversalDependency().Equals("CSUBJ")) { 
+                                specialIndex = currentIndex - i; 
+                            } 
+                            break; 
                         } 
-                        break; 
-                    } 
-                } else { 
-                    if (specialsMap.ContainsKey(unionList[currentIndex + j].GetUniversalDependency())) { 
-                        commands.Add(new Tuple<Command, string>(Command.Right, null)); 
-                        commands.Add(new Tuple<Command, string>(Command.Merge, null)); 
-                        j++; 
                     } else { 
-                        break; 
+                        if (specialsMap.ContainsKey(unionList[currentIndex + j].GetUniversalDependency())) { 
+                            commands.Add(new Tuple<Command, string>(Command.Right, null)); 
+                            commands.Add(new Tuple<Command, string>(Command.Merge, treePos)); 
+                            j++; 
+                        } else { 
+                            break; 
+                        } 
                     } 
                 } 
-            } 
-            if (specialIndex == -1) { 
-                specialIndex = FindSpecialIndex(unionList, currentIndex); 
-            } 
-            if (specialIndex > -1 && ContainsWordNodePair(unionList, unionList[specialIndex].GetTo() - 1)) { 
-                if (currentIndex > specialIndex) { 
-                    AddSpecialForLeft(unionList, commands, i, j, currentIndex); 
+                if (specialIndex == -1) { 
+                    specialIndex = FindSpecialIndex(unionList, currentIndex); 
+                } 
+                if (specialIndex > -1 && ContainsWordNodePair(unionList, unionList[specialIndex].GetTo() - 1)) { 
+                    if (currentIndex > specialIndex) { 
+                        AddSpecialForLeft(unionList, commands, i, j, currentIndex); 
+                    } else { 
+                        i = FinalCommandsForObjects(unionList, currentIndex, i, commands); 
+                        var check = false; 
+                        while (currentIndex + j < unionList.Count) { 
+                            check = true; 
+                            commands.Add(new Tuple<Command, string>(Command.Right, null)); 
+                            j++; 
+                        } 
+                        while (currentIndex - i > -1) { 
+                            check = true; 
+                            commands.Add(new Tuple<Command, string>(Command.Left, null)); 
+                            i++; 
+                        } 
+                        if (check) { 
+                            commands.Add(new Tuple<Command, string>(Command.Merge, treePos)); 
+                        } 
+                    } 
                 } else { 
-                    // temporary solution
                     i = FinalCommandsForObjects(unionList, currentIndex, i, commands); 
                     var check = false; 
                     while (currentIndex + j < unionList.Count) { 
@@ -182,28 +225,12 @@ namespace StructureConverter.DependencyToConstituency {
                         i++; 
                     } 
                     if (check) { 
-                        commands.Add(new Tuple<Command, string>(Command.Merge, null)); 
+                        commands.Add(new Tuple<Command, string>(Command.Merge, treePos)); 
                     } 
-                    // temporary solution
                 } 
-            } else { 
-                i = FinalCommandsForObjects(unionList, currentIndex, i, commands); 
-                var check = false; 
-                while (currentIndex + j < unionList.Count) { 
-                    check = true; 
-                    commands.Add(new Tuple<Command, string>(Command.Right, null)); 
-                    j++; 
-                } 
-                while (currentIndex - i > -1) { 
-                    check = true; 
-                    commands.Add(new Tuple<Command, string>(Command.Left, null)); 
-                    i++; 
-                } 
-                if (check) { 
-                    commands.Add(new Tuple<Command, string>(Command.Merge, null)); 
-                } 
-            } 
-            return commands; 
+                return commands; 
+            }
+            return SimpleMerge(unionList, treePos, currentIndex);
         }
     }
 }

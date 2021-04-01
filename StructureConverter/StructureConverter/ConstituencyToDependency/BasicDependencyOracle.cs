@@ -135,28 +135,35 @@ namespace StructureConverter.ConstituencyToDependency {
                         thirdChild = parent.GetChild(2).GetData().GetName(); 
                     } 
                     if (parent.NumberOfChildren() == 2 && parentData.Equals("S") && firstChild.Equals("NP")) { 
-                        decisions.Add(new Decision(headIndex - i, "NSUBJ")); 
+                        decisions.Add(new Decision(startIndex + decisions.Count, headIndex - i, "NSUBJ")); 
                     } else if (parent.NumberOfChildren() == 3 && parentData.Equals("S") && firstChild.Equals("NP") && secondChild.Equals("VP") && Word.IsPunctuation(thirdChild)) { 
                         if (!wordNodePairList[i].GetWord().IsPunctuation()) { 
-                            decisions.Add(new Decision(headIndex - i, "NSUBJ")); 
+                            decisions.Add(new Decision(startIndex + decisions.Count, headIndex - i, "NSUBJ")); 
                         } else { 
-                            decisions.Add(new Decision(headIndex - i, "PUNCT")); 
+                            decisions.Add(new Decision(startIndex + decisions.Count, headIndex - i, "PUNCT")); 
                         } 
                     } else { 
                         var dependent = wordNodePairList[i].GetNode().GetData().GetName(); 
                         var head = wordNodePairList[headIndex].GetNode().GetData().GetName(); 
                         var condition1 = wordNodePairList[i].GetNode().GetData().IsPunctuation(); 
                         var condition2 = wordNodePairList[headIndex].GetNode().GetData().IsPunctuation(); 
-                        decisions.Add(new Decision(headIndex - i, FindData(dependent, head, condition1, condition2, wordNodePairList[i].GetWord(), wordNodePairList[headIndex].GetWord()))); 
+                        decisions.Add(new Decision(startIndex + decisions.Count, headIndex - i, FindData(dependent, head, condition1, condition2, wordNodePairList[i].GetWord(), wordNodePairList[headIndex].GetWord()))); 
                     } 
                 } else { 
-                    decisions.Add(new Decision(0, null)); 
+                    decisions.Add(new Decision(-1, 0, null)); 
                 } 
             } 
             return decisions; 
         }
         
         public List<Decision> MakeDecisions(int firstIndex, int lastIndex, List<WordNodePair> wordNodePairList, ParseNodeDrawable node) {
+            if (node.NumberOfChildren() == 3 && node.GetChild(1).GetData().GetName().Equals("CONJP")) {
+                var decisions = new List<Decision>();
+                decisions.Add(new Decision(-1, 0, null));
+                decisions.Add(new Decision((lastIndex + firstIndex) / 2, lastIndex - ((lastIndex + firstIndex) / 2), "CC"));
+                decisions.Add(new Decision(lastIndex, firstIndex - lastIndex, "CONJ"));
+                return decisions;
+            }
             var headIndex = FindHeadIndex(firstIndex, lastIndex, wordNodePairList);
             return SetToAndAddUniversalDependency(firstIndex, headIndex, wordNodePairList, lastIndex, node);
         }

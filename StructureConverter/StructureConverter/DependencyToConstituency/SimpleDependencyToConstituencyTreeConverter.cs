@@ -136,59 +136,41 @@ namespace StructureConverter.DependencyToConstituency {
             }
             return true;
         }
-        
-        private void SimpleMerge(List<WordNodePair> unionList, string treePos) {
-            var parent = new ParseNodeDrawable(new Symbol(treePos));
-            foreach (var wordNodePair in unionList) {
-                var parseNodeDrawable = wordNodePair.GetNode();
-                if (!ContainsChild(parent, GetParent(parseNodeDrawable))) {
-                    parent.AddChild(GetParent(parseNodeDrawable));
-                }
-            }
-        }
-        
+
         private void Merge(List<WordNodePair> wordNodePairs, Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int i, IProjectionOracle oracle) { 
-            UpdateUnionCandidateLists(unionList, wordNodePairs[i]); 
-            if (unionList.Count == 2) { 
-                var treePos = SetTreePos(unionList, wordNodePairs[i].GetTreePos()); 
-                SimpleMerge(unionList, treePos); 
-            } else { 
-                var index = -1; 
-                for (var j = 0; j < unionList.Count; j++) { 
-                    if (unionList[j].Equals(wordNodePairs[i])) { 
-                        index = j; 
+            UpdateUnionCandidateLists(unionList, wordNodePairs[i]);
+            var index = -1; 
+            for (var j = 0; j < unionList.Count; j++) { 
+                if (unionList[j].Equals(wordNodePairs[i])) { 
+                    index = j; 
+                    break; 
+                } 
+            } 
+            var list = oracle.MakeCommands(specialsMap, unionList, index); 
+            var currentUnionList = new List<WordNodePair>(); 
+            currentUnionList.Add(unionList[index]); 
+            int leftIndex = 0, rightIndex = 0, iterate = 0; 
+            while (iterate < list.Count) { 
+                var command = list[iterate].Item1; 
+                switch (command) { 
+                    case Command.Merge:
+                        var treePos = list[iterate].Item2;
+                        MergeNodes(currentUnionList, treePos); 
+                        currentUnionList.Clear(); 
+                        currentUnionList.Add(unionList[index]); 
                         break; 
-                    } 
+                    case Command.Left: 
+                        leftIndex++; 
+                        UpdateUnionCandidateLists(currentUnionList, unionList[index - leftIndex]); 
+                        break; 
+                    case Command.Right: 
+                        rightIndex++; 
+                        UpdateUnionCandidateLists(currentUnionList, unionList[index + rightIndex]); 
+                        break; 
+                    default: 
+                        break; 
                 } 
-                var list = oracle.MakeCommands(specialsMap, unionList, index); 
-                var currentUnionList = new List<WordNodePair>(); 
-                currentUnionList.Add(unionList[index]); 
-                int leftIndex = 0, rightIndex = 0, iterate = 0; 
-                while (iterate < list.Count) { 
-                    var command = list[iterate].Item1; 
-                    switch (command) { 
-                        case Command.Merge: 
-                            var treePos = SetTreePos(unionList, unionList[index].GetTreePos()); 
-                            if (list[iterate].Item2 != null) { 
-                                treePos = list[iterate].Item2; 
-                            } 
-                            MergeNodes(currentUnionList, treePos); 
-                            currentUnionList.Clear(); 
-                            currentUnionList.Add(unionList[index]); 
-                            break; 
-                        case Command.Left: 
-                            leftIndex++; 
-                            UpdateUnionCandidateLists(currentUnionList, unionList[index - leftIndex]); 
-                            break; 
-                        case Command.Right: 
-                            rightIndex++; 
-                            UpdateUnionCandidateLists(currentUnionList, unionList[index + rightIndex]); 
-                            break; 
-                        default: 
-                            break; 
-                    } 
-                    iterate++; 
-                } 
+                iterate++; 
             } 
         }
         
@@ -202,17 +184,7 @@ namespace StructureConverter.DependencyToConstituency {
                 }
             }
         }
-        
-        private string SetTreePos(List<WordNodePair> list, string currentPos) {
-            var treePos = currentPos;
-            foreach (var current in list) {
-                if (current != null && current.GetTreePos().Equals("PP")) {
-                    treePos = current.GetTreePos();
-                }
-            }
-            return treePos;
-        }
-        
+
         private bool IsThereAll(Dictionary<int, List<int>> map, int current, int total) {
             return map[current].Count == total;
         }

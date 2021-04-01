@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zYp/PhCr2j8LPWXbQks8hmaRyt5GFypGJKFl5QvmYwCLN2MtZPr+ECYxmL4MW7wc39ufUn+rjwsPumxAfx2bwA==",
+  "dgSpecHash": "C9XukS1ywseg4YdH4iLkSZy2gTVAHdjB37+CYuNyuQOH6g5mGW6c9LzyPh1tDSI4wCiOdPoae7rGQ1CIYKQZeQ==",
   "success": true,
-  "projectFilePath": "/Users/oguzkeremyildiz/Dropbox/StructureConverter-CS/StructureConverter/StructureConverter.csproj",
+  "projectFilePath": "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj",
   "expectedPackageFiles": [
     "/Users/oguzkeremyildiz/.nuget/packages/nlptoolkit-annotatedsentence/1.0.10/nlptoolkit-annotatedsentence.1.0.10.nupkg.sha512",
     "/Users/oguzkeremyildiz/.nuget/packages/nlptoolkit-annotatedtree/1.0.4/nlptoolkit-annotatedtree.1.0.4.nupkg.sha512",
