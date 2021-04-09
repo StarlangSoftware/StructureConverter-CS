@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StructureConverter.DependencyToConstituency {
     
-    public class BasicOracle : IProjectionOracle {
+    public class BasicOracle : ProjectionOracle {
         
         private int CompareTo(WordNodePair first, WordNodePair second, Dictionary<string, int> specialsMap) {
             var firstUniversalDependency = first.GetUniversalDependency();
@@ -118,16 +118,6 @@ namespace StructureConverter.DependencyToConstituency {
             }
             return i;
         }
-        
-        private string SetTreePos(List<WordNodePair> list, string currentPos) {
-            var treePos = currentPos;
-            foreach (var current in list) {
-                if (current != null && current.GetTreePos().Equals("PP")) {
-                    treePos = current.GetTreePos();
-                }
-            }
-            return treePos;
-        }
 
         private List<Tuple<Command, string>> SimpleMerge(List<WordNodePair> unionList, string treePos, int index) {
             var list = new List<Tuple<Command, string>>();
@@ -144,7 +134,7 @@ namespace StructureConverter.DependencyToConstituency {
             return list;
         }
         
-        public List<Tuple<Command, string>> MakeCommands(Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int currentIndex) {
+        public override List<Tuple<Command, string>> MakeCommands(Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int currentIndex) {
             var treePos = SetTreePos(unionList, unionList[currentIndex].GetTreePos());
             if (unionList.Count > 2) {
                 int i = 1, j = 1, specialIndex = -1; 

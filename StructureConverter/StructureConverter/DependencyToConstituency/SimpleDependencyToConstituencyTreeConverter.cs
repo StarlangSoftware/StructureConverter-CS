@@ -137,7 +137,7 @@ namespace StructureConverter.DependencyToConstituency {
             return true;
         }
 
-        private void Merge(List<WordNodePair> wordNodePairs, Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int i, IProjectionOracle oracle) { 
+        private void Merge(List<WordNodePair> wordNodePairs, Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int i, ProjectionOracle oracle) { 
             UpdateUnionCandidateLists(unionList, wordNodePairs[i]);
             var index = -1; 
             for (var j = 0; j < unionList.Count; j++) { 
@@ -215,7 +215,7 @@ namespace StructureConverter.DependencyToConstituency {
         }
         
         private ParseTree.ParseTree ConstructTreeFromWords(List<WordNodePair> wordNodePairs, Dictionary<int, List<int>> dependencyMap, ParserConverterType type) {
-            IProjectionOracle oracle;
+            ProjectionOracle oracle;
             if (type.Equals(ParserConverterType.BasicOracle)) {
                 oracle = new BasicOracle();
             } else {
