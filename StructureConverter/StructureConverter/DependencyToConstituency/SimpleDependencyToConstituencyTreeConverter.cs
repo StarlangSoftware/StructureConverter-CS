@@ -137,15 +137,21 @@ namespace StructureConverter.DependencyToConstituency {
             return true;
         }
 
-        private void Merge(List<WordNodePair> wordNodePairs, Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int i, ProjectionOracle oracle) { 
+        private void Merge(List<WordNodePair> wordNodePairs, Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int i, ParserConverterType type) { 
             UpdateUnionCandidateLists(unionList, wordNodePairs[i]);
             var index = -1; 
-            for (var j = 0; j < unionList.Count; j++) { 
-                if (unionList[j].Equals(wordNodePairs[i])) { 
-                    index = j; 
-                    break; 
-                } 
-            } 
+            for (var j = 0; j < unionList.Count; j++) {
+                if (unionList[j].Equals(wordNodePairs[i])) {
+                    index = j;
+                    break;
+                }
+            }
+            ProjectionOracle oracle;
+            if (type.Equals(ParserConverterType.BasicOracle) || unionList.Count > 8) {
+                oracle = new BasicOracle();
+            } else {
+                oracle = new ClassifierOracle();
+            }
             var list = oracle.MakeCommands(specialsMap, unionList, index); 
             var currentUnionList = new List<WordNodePair>(); 
             currentUnionList.Add(unionList[index]); 
@@ -215,12 +221,6 @@ namespace StructureConverter.DependencyToConstituency {
         }
         
         private ParseTree.ParseTree ConstructTreeFromWords(List<WordNodePair> wordNodePairs, Dictionary<int, List<int>> dependencyMap, ParserConverterType type) {
-            ProjectionOracle oracle;
-            if (type.Equals(ParserConverterType.BasicOracle)) {
-                oracle = new BasicOracle();
-            } else {
-                oracle = new ClassifierOracle();
-            }
             var specialsMap = SetSpecialMap();
             int total;
             while (true) {
@@ -245,7 +245,7 @@ namespace StructureConverter.DependencyToConstituency {
                 } while (true);
                 wordNodePairs[j - 1].SetFinish();
                 if (unionList.Count > 0) {
-                    Merge(wordNodePairs, specialsMap, unionList, j - 1, oracle);
+                    Merge(wordNodePairs, specialsMap, unionList, j - 1, type);
                 } else {
                     break;
                 }
