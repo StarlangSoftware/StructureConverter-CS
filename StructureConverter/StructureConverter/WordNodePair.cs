@@ -8,8 +8,8 @@ namespace StructureConverter {
         private readonly AnnotatedWord _annotatedWord; 
         private ParseNodeDrawable _node; 
         private readonly int _no; 
-        private bool _done; 
-        private bool _finished; 
+        private bool _doneForConnect; 
+        private bool _doneForHead; 
         
         public WordNodePair(AnnotatedWord annotatedWord, int no) { 
             _annotatedWord = annotatedWord; 
@@ -24,14 +24,14 @@ namespace StructureConverter {
             _node = new ParseNodeDrawable(parent, annotatedWord.ToString().Replace("\\(", "-LRB-").Replace("\\)", "-RRB-"), true, 0); 
             parent.AddChild(_node); 
             _no = no; 
-            _done = false; 
-            _finished = false; 
+            _doneForConnect = false; 
+            _doneForHead = false; 
         }
         
         public WordNodePair(ParseNodeDrawable parseNodeDrawable, int no) { 
             _node = parseNodeDrawable; 
             _annotatedWord = new AnnotatedWord(parseNodeDrawable.GetLayerData()); 
-            _done = false; 
+            _doneForConnect = false; 
             _no = no; 
         } 
         
@@ -59,20 +59,20 @@ namespace StructureConverter {
             return _annotatedWord.GetUniversalDependency().To(); 
         }
         
-        public bool IsDone() { 
-            return _done; 
+        public bool IsDoneForConnect() { 
+            return _doneForConnect; 
         }
         
-        public bool IsFinished() { 
-            return _finished; 
+        public bool IsDoneForHead() { 
+            return _doneForHead; 
         }
         
-        public void SetDone() { 
-            _done = true; 
+        public void DoneForConnect() { 
+            _doneForConnect = true; 
         }
         
-        public void SetFinish() { 
-            _finished = true; 
+        public void DoneForHead() { 
+            _doneForHead = true; 
         }
         
         public string GetTreePos() { 
@@ -83,7 +83,7 @@ namespace StructureConverter {
         }
         
         public bool Equals(WordNodePair wordNodePair) { 
-            return _annotatedWord.Equals(wordNodePair._annotatedWord) && _no == wordNodePair._no && _done == wordNodePair._done; 
+            return _annotatedWord.Equals(wordNodePair._annotatedWord) && _no == wordNodePair._no && _doneForConnect == wordNodePair._doneForConnect; 
         }
     }
 }

@@ -4,6 +4,7 @@ using AnnotatedSentence;
 using AnnotatedTree;
 using AnnotatedTree.Processor;
 using AnnotatedTree.Processor.Condition;
+using Classification.Model;
 
 namespace StructureConverter.ConstituencyToDependency {
     
@@ -17,12 +18,18 @@ namespace StructureConverter.ConstituencyToDependency {
             return i;
         }
 
-        private void AddUniversalDependency(List<ParseNodeDrawable> parseNodeDrawableList, List<WordNodePair> wordNodePairList, IDependencyOracle oracle) {
+        private void AddUniversalDependency(List<ParseNodeDrawable> parseNodeDrawableList, List<WordNodePair> wordNodePairList, List<TreeEnsembleModel> models) {
             for (var i = 0; i < parseNodeDrawableList.Count - 1; i++) {
                 if (parseNodeDrawableList[i].Equals(parseNodeDrawableList[i + 1])) {
                     var last = FindEndingNode(i, wordNodePairList);
                     if (last - i + 1 == parseNodeDrawableList[i].NumberOfChildren()) {
-                        var decisions = oracle.MakeDecisions(i, last, wordNodePairList, parseNodeDrawableList[i]);
+                        IDependencyOracle oracle;
+                        if (models == null || last - i + 1 > 7) {
+                            oracle = new BasicDependencyOracle();
+                        } else {
+                            oracle = new ClassifierDependencyOracle();
+                        }
+                        var decisions = oracle.MakeDecisions(i, last, wordNodePairList, parseNodeDrawableList[i], models);
                         for (var j = 0; j < decisions.Count; j++) {
                             var decision = decisions[j];
                             if (decision.GetNo() < 0) {
@@ -33,7 +40,7 @@ namespace StructureConverter.ConstituencyToDependency {
                                     }
                                 }
                             } else {
-                                wordNodePairList[decision.GetNo()].SetDone();
+                                wordNodePairList[decision.GetNo()].DoneForConnect();
                                 wordNodePairList[decision.GetNo()].GetWord().SetUniversalDependency(wordNodePairList[decision.GetNo() + decision.GetTo()].GetNo(), decision.GetData());
                             }
                         }
@@ -43,13 +50,7 @@ namespace StructureConverter.ConstituencyToDependency {
             } 
         }
         
-        private void ConstructDependenciesFromTree(List<WordNodePair> wordNodePairList, ParserConverterType type) {
-            IDependencyOracle oracle;
-            if (type.Equals(ParserConverterType.BasicOracle)) {
-                oracle = new BasicDependencyOracle();
-            } else {
-                oracle = new ClassifierDependencyOracle();
-            }
+        private void ConstructDependenciesFromTree(List<WordNodePair> wordNodePairList, List<TreeEnsembleModel> models) {
             SetRoot(wordNodePairList);
             var parseNodeDrawableList = new List<ParseNodeDrawable>();
             var wordNodePairs = new List<WordNodePair>(wordNodePairList);
@@ -57,11 +58,11 @@ namespace StructureConverter.ConstituencyToDependency {
                 parseNodeDrawableList.Add((ParseNodeDrawable) wordNodePair.GetNode().GetParent());
             }
             while (parseNodeDrawableList.Count > 1) {
-                AddUniversalDependency(parseNodeDrawableList, wordNodePairs, oracle);
+                AddUniversalDependency(parseNodeDrawableList, wordNodePairs, models);
                 parseNodeDrawableList.Clear();
                 wordNodePairs.Clear();
                 foreach (var wordNodePair in wordNodePairList) {
-                    if (!wordNodePair.IsDone()) {
+                    if (!wordNodePair.IsDoneForConnect()) {
                         parseNodeDrawableList.Add((ParseNodeDrawable) wordNodePair.GetNode().GetParent());
                         wordNodePairs.Add(wordNodePair);
                     }
@@ -83,7 +84,7 @@ namespace StructureConverter.ConstituencyToDependency {
             }
         }
         
-        public AnnotatedSentence.AnnotatedSentence Convert(ParseTreeDrawable parseTree, ParserConverterType type) { 
+        public AnnotatedSentence.AnnotatedSentence Convert(ParseTreeDrawable parseTree, List<TreeEnsembleModel> models) { 
             if (parseTree != null) {
                 var annotatedSentence = new AnnotatedSentence.AnnotatedSentence();
                 var nodeDrawableCollector = new NodeDrawableCollector((ParseNodeDrawable) parseTree.GetRoot(), new IsLeafNode());
@@ -101,7 +102,7 @@ namespace StructureConverter.ConstituencyToDependency {
                     annotatedSentence.AddWord(wordNodePair.GetWord());
                     wordNodePairList.Add(wordNodePair);
                 }
-                ConstructDependenciesFromTree(wordNodePairList, type);
+                ConstructDependenciesFromTree(wordNodePairList, models);
                 return annotatedSentence;
             }
             return null;

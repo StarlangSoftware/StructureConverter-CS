@@ -13,7 +13,7 @@ namespace StructureConverter.ConstituencyToDependency {
         public Corpus.Corpus Convert(IConstituencyToDependencyTreeConverter constituencyToDependencyTreeConverter) {
             var annotatedCorpus = new Corpus.Corpus();
             for (var i = 0; i < _treeBank.Size(); i++){
-                annotatedCorpus.AddSentence(constituencyToDependencyTreeConverter.Convert(_treeBank.Get(i), ParserConverterType.BasicOracle));
+                annotatedCorpus.AddSentence(constituencyToDependencyTreeConverter.Convert(_treeBank.Get(i), null));
             }
             return annotatedCorpus;
         }

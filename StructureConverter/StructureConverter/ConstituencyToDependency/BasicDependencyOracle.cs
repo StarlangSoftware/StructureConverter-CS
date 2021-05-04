@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AnnotatedSentence;
 using AnnotatedTree;
+using Classification.Model;
 using Dictionary.Dictionary;
 using MorphologicalAnalysis;
 
@@ -156,7 +157,7 @@ namespace StructureConverter.ConstituencyToDependency {
             return decisions; 
         }
         
-        public List<Decision> MakeDecisions(int firstIndex, int lastIndex, List<WordNodePair> wordNodePairList, ParseNodeDrawable node) {
+        public List<Decision> MakeDecisions(int firstIndex, int lastIndex, List<WordNodePair> wordNodePairList, ParseNodeDrawable node, List<TreeEnsembleModel> models) {
             if (node.NumberOfChildren() == 3 && node.GetChild(1).GetData().GetName().Equals("CONJP")) {
                 var decisions = new List<Decision>();
                 decisions.Add(new Decision(-1, 0, null));

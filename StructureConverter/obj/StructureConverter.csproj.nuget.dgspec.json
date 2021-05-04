@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj": {}
+    "/Users/oguzkeremyildiz/Dropbox (Starlang)/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj": {}
   },
   "projects": {
-    "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj": {
+    "/Users/oguzkeremyildiz/Dropbox (Starlang)/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj",
+        "projectUniqueName": "/Users/oguzkeremyildiz/Dropbox (Starlang)/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj",
         "projectName": "StructureConverter",
-        "projectPath": "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj",
+        "projectPath": "/Users/oguzkeremyildiz/Dropbox (Starlang)/nlptoolkit-c#/StructureConverter/StructureConverter/StructureConverter.csproj",
         "packagesPath": "/Users/oguzkeremyildiz/.nuget/packages/",
-        "outputPath": "/Users/oguzkeremyildiz/Dropbox/nlptoolkit-c#/StructureConverter/StructureConverter/obj/",
+        "outputPath": "/Users/oguzkeremyildiz/Dropbox (Starlang)/nlptoolkit-c#/StructureConverter/StructureConverter/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/oguzkeremyildiz/.nuget/NuGet/NuGet.Config"
@@ -38,15 +38,19 @@
           "dependencies": {
             "NlpToolkit-AnnotatedSentence": {
               "target": "Package",
-              "version": "[1.0.10, )"
+              "version": "[1.0.13, )"
             },
             "NlpToolkit-AnnotatedTree": {
               "target": "Package",
               "version": "[1.0.4, )"
             },
+            "NlpToolkit-Classification": {
+              "target": "Package",
+              "version": "[1.0.4, )"
+            },
             "NlpToolkit-MorphologicalAnalysis": {
               "target": "Package",
-              "version": "[1.0.8, )"
+              "version": "[1.0.11, )"
             },
             "NlpToolkit-ParseTree": {
               "target": "Package",

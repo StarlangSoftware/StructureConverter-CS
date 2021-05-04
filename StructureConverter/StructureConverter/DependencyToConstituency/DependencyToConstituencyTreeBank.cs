@@ -14,7 +14,7 @@ namespace StructureConverter.DependencyToConstituency {
         public TreeBankDrawable Convert(IDependencyToConstituencyTreeConverter dependencyToConstituencyTreeConverter) {
             var parseTrees = new List<ParseTree.ParseTree>();
             for (var i = 0; i < _annotatedCorpus.SentenceCount(); i++){
-                parseTrees.Add(dependencyToConstituencyTreeConverter.Convert((AnnotatedSentence.AnnotatedSentence) _annotatedCorpus.GetSentence(i), ParserConverterType.BasicOracle));
+                parseTrees.Add(dependencyToConstituencyTreeConverter.Convert((AnnotatedSentence.AnnotatedSentence) _annotatedCorpus.GetSentence(i), null));
             }
             return new TreeBankDrawable(parseTrees);
         }

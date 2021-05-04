@@ -2,25 +2,13 @@ using System;
 using System.Collections.Generic;
 using AnnotatedSentence;
 using AnnotatedTree;
+using Classification.Model;
 using ParseTree;
 
 namespace StructureConverter.DependencyToConstituency {
     
     public class SimpleDependencyToConstituencyTreeConverter : IDependencyToConstituencyTreeConverter {
-        
-        private Dictionary<string, int> SetSpecialMap() {
-            var map = new Dictionary<string, int>();
-            map["COMPOUND"] = 8;
-            map["AUX"] =  7;
-            map["DET"] = 6;
-            map["AMOD"] = 5;
-            map["NUMMOD"] = 4;
-            map["CASE"] = 3;
-            map["CCOMP"] = 2;
-            map["NEG"] = 1;
-            return map;
-        }
-        
+
         private List<WordNodePair> ConstructWordPairList(AnnotatedSentence.AnnotatedSentence sentence, String fileName) {
             var wordNodePairs = new List<WordNodePair>();
             for (var i = 0; i < sentence.WordCount(); i++) {
@@ -60,7 +48,7 @@ namespace StructureConverter.DependencyToConstituency {
             for (var j = 0; j < wordList.Count; j++) {
                 var word = wordList[j];
                 var toWord = word.GetTo() - 1;
-                if (!word.IsDone() && i != j && toWord > -1 && toWord < wordList.Count) {
+                if (!word.IsDoneForConnect() && i != j && toWord > -1 && toWord < wordList.Count) {
                     if (wordList[i].Equals(wordList[toWord])) {
                         return false;
                     }
@@ -69,54 +57,46 @@ namespace StructureConverter.DependencyToConstituency {
             return true;
         }
         
-        private void UpdateUnionCandidateLists(List<WordNodePair> list, WordNodePair wordNodePair) {
+        private int UpdateUnionCandidateLists(List<WordNodePair> list, WordNodePair wordNodePair) {
             if (list.Count < 2) {
                 if (list.Count == 1 && list[0].GetNo() > wordNodePair.GetNo()) {
                     list.Insert(0, wordNodePair);
+                    return 0;
                 } else {
                     list.Add(wordNodePair);
+                    return list.Count - 1;
                 }
             } else {
                 if (list[0].GetNo() > wordNodePair.GetNo()) {
                     list.Insert(0, wordNodePair);
+                    return 0;
                 } else if (list[list.Count - 1].GetNo() < wordNodePair.GetNo()) {
                     list.Add(wordNodePair);
+                    return list.Count - 1;
                 } else {
                     for (var i = 0; i < list.Count - 1; i++) {
                         if (wordNodePair.GetNo() > list[i].GetNo() && wordNodePair.GetNo() < list[i + 1].GetNo()) {
                             list.Insert(i + 1, wordNodePair);
-                            break;
+                            return i + 1;
                         }
                     }
                 }
             }
+            return -1;
         }
         
-        private Tuple<List<WordNodePair>, bool> SetOfNodesToBeMergedOntoNode(List<WordNodePair> wordNodePairs, WordNodePair headWord) {
+        private List<WordNodePair> SetOfNodesToBeMergedOntoNode(List<WordNodePair> wordNodePairs, WordNodePair headWord) {
             var list = new List<WordNodePair>();
-            var isFinished = false;
             for (var i = 0; i < wordNodePairs.Count; i++) {
                 var wordNodePair = wordNodePairs[i];
-                var toWord1 = wordNodePair.GetTo() - 1;
-                if (!wordNodePair.IsDone()) {
-                    if (NoIncomingNodes(wordNodePairs, i) && toWord1 == headWord.GetNo()) {
-                        wordNodePair.SetDone();
-                        UpdateUnionCandidateLists(list, wordNodePair);
-                        if (!isFinished && headWord.GetTo() - 1 < wordNodePairs.Count && headWord.GetTo() - 1 > -1 && !wordNodePairs[headWord.GetTo() - 1].IsDone() && System.Math.Abs(headWord.GetTo() - headWord.GetNo()) == 1 && headWord.GetUniversalDependency().Equals("CONJ") && System.Math.Abs(wordNodePair.GetTo() - wordNodePair.GetNo()) == 2 && wordNodePair.GetUniversalDependency().Equals("CC")) {
-                            if (NoIncomingNodes(wordNodePairs, headWord.GetTo() - 1)) {
-                                wordNodePairs[headWord.GetTo() - 1].SetDone();
-                            }
-                            isFinished = true;
-                            UpdateUnionCandidateLists(list, wordNodePairs[headWord.GetTo() - 1]);
-                        }
-                    }
-                } else {
-                    if (toWord1 > -1 && toWord1 == headWord.GetNo()) {
+                var toWordIndex = wordNodePair.GetTo() - 1;
+                if (!wordNodePair.IsDoneForConnect()) {
+                    if (NoIncomingNodes(wordNodePairs, i) && toWordIndex == headWord.GetNo()) {
                         UpdateUnionCandidateLists(list, wordNodePair);
                     }
                 }
             }
-            return new Tuple<List<WordNodePair>, bool>(list, isFinished);
+            return list;
         }
         
         private bool ContainsChild(ParseNodeDrawable parent, ParseNodeDrawable child) {
@@ -137,22 +117,15 @@ namespace StructureConverter.DependencyToConstituency {
             return true;
         }
 
-        private void Merge(List<WordNodePair> wordNodePairs, Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int i, ParserConverterType type) { 
-            UpdateUnionCandidateLists(unionList, wordNodePairs[i]);
-            var index = -1; 
-            for (var j = 0; j < unionList.Count; j++) {
-                if (unionList[j].Equals(wordNodePairs[i])) {
-                    index = j;
-                    break;
-                }
-            }
+        private void Merge(List<WordNodePair> wordNodePairs, List<WordNodePair> unionList, int i, List<TreeEnsembleModel> models) { 
+            var index = UpdateUnionCandidateLists(unionList, wordNodePairs[i]);
             ProjectionOracle oracle;
-            if (type.Equals(ParserConverterType.BasicOracle) || unionList.Count > 8) {
+            if (models == null || unionList.Count > 8) {
                 oracle = new BasicOracle();
             } else {
                 oracle = new ClassifierOracle();
             }
-            var list = oracle.MakeCommands(specialsMap, unionList, index); 
+            var list = oracle.MakeCommands(unionList, index, models); 
             var currentUnionList = new List<WordNodePair>(); 
             currentUnionList.Add(unionList[index]); 
             int leftIndex = 0, rightIndex = 0, iterate = 0; 
@@ -220,32 +193,54 @@ namespace StructureConverter.DependencyToConstituency {
             return map;
         }
         
-        private ParseTree.ParseTree ConstructTreeFromWords(List<WordNodePair> wordNodePairs, Dictionary<int, List<int>> dependencyMap, ParserConverterType type) {
-            var specialsMap = SetSpecialMap();
+        private int IsSpecialState(List<WordNodePair> unionList, List<WordNodePair> wordNodePairs, int headIndex) {
+            var head = wordNodePairs[headIndex];
+            if (head.GetTo() > 0 && head.GetTo() < wordNodePairs.Count && headIndex - 1 == head.GetTo()) {
+                var first = wordNodePairs[head.GetTo() - 1];
+                var second = wordNodePairs[head.GetTo()];
+                if (!first.IsDoneForConnect() && head.GetUniversalDependency().Equals("CONJ") && second.GetUniversalDependency().Equals("CC") && second.GetTo() - 1 == headIndex) {
+                    var index = UpdateUnionCandidateLists(unionList, first);
+                    if (NoIncomingNodes(wordNodePairs, head.GetTo() - 1)) {
+                        first.DoneForConnect();
+                    }
+                    return index;
+                }
+            }
+            return -1;
+        }
+        
+        private ParseTree.ParseTree ConstructTreeFromWords(List<WordNodePair> wordNodePairs, Dictionary<int, List<int>> dependencyMap, List<TreeEnsembleModel> models) {
             int total;
             while (true) {
                 var j = 0;
+                var index = -1;
                 var unionList = new List<WordNodePair>();
                 do {
-                    if (!wordNodePairs[j].IsFinished()) {
-                        var tuple = SetOfNodesToBeMergedOntoNode(wordNodePairs, wordNodePairs[j]);
-                        unionList = tuple.Item1;
-                        var isFinished = tuple.Item2;
+                    var head = wordNodePairs[j];
+                    if (!head.IsDoneForHead()) {
+                        unionList = SetOfNodesToBeMergedOntoNode(wordNodePairs, head);
+                        index = IsSpecialState(unionList, wordNodePairs, j);
                         j++;
-                        total = unionList.Count;
-                        if (isFinished || (dependencyMap.ContainsKey(j) && IsThereAll(dependencyMap, j, total) && (unionList.Count != 0))) {
+                        if (index > -1) {
                             break;
+                        } else {
+                            total = unionList.Count;
+                            if (dependencyMap.ContainsKey(j) && IsThereAll(dependencyMap, j, total) && (unionList.Count != 0)) {
+                                break;
+                            }
                         }
                     } else {
                         j++;
                     }
-                    if (j == wordNodePairs.Count) {
-                        break;
+                } while (j < wordNodePairs.Count);
+                for (var i = 0; i < unionList.Count; i++) {
+                    if (i != index) {
+                        unionList[i].DoneForConnect();
                     }
-                } while (true);
-                wordNodePairs[j - 1].SetFinish();
+                }
+                wordNodePairs[j - 1].DoneForHead();
                 if (unionList.Count > 0) {
-                    Merge(wordNodePairs, specialsMap, unionList, j - 1, type);
+                    Merge(wordNodePairs, unionList, j - 1, models);
                 } else {
                     break;
                 }
@@ -283,12 +278,12 @@ namespace StructureConverter.DependencyToConstituency {
             return list;
         }
         
-        public ParseTree.ParseTree Convert(AnnotatedSentence.AnnotatedSentence annotatedSentence, ParserConverterType type) {
+        public ParseTree.ParseTree Convert(AnnotatedSentence.AnnotatedSentence annotatedSentence, List<TreeEnsembleModel> models) {
             try {
                 var wordNodePairs = ConstructWordPairList(annotatedSentence, annotatedSentence.GetFileName());
                 var dependencyMap = SetDependencyMap(wordNodePairs);
                 if (wordNodePairs.Count > 1) {
-                    return ConstructTreeFromWords(wordNodePairs, dependencyMap, type);
+                    return ConstructTreeFromWords(wordNodePairs, dependencyMap, models);
                 } else {
                     var parent = new ParseNodeDrawable(new Symbol("S"));
                     parent.AddChild(wordNodePairs[0].GetNode());

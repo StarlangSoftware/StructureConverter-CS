@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Classification.Model;
 
 namespace StructureConverter.DependencyToConstituency {
     
@@ -18,6 +19,6 @@ namespace StructureConverter.DependencyToConstituency {
             return treePos;
         }
         
-        public abstract List<Tuple<Command, string>> MakeCommands(Dictionary<string, int> specialsMap, List<WordNodePair> unionList, int currentIndex);
+        public abstract List<Tuple<Command, string>> MakeCommands(List<WordNodePair> unionList, int currentIndex, List<TreeEnsembleModel> models);
     }
 }
